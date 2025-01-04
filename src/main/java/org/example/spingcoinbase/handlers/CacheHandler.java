@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class CacheHandler {
-    private Cache<String, String> cache = null;
+    private final Cache<String, String> cache;
 
     public CacheHandler() {
         cache = Caffeine.newBuilder()

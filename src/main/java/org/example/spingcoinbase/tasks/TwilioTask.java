@@ -54,12 +54,12 @@ public class TwilioTask {
                     text += String.format("The price of %s has dropped to %.2f which is lower than %.2f.",
                             c.getSymbol(), c.getPrice(), c.getThreshold());
                 }
-
+                assert twilioAccountSIDSecret != null;
+                assert twilioAuthTokenSecret != null;
                 Twilio.init(twilioAccountSIDSecret, twilioAuthTokenSecret);
                 Call call = Call.creator(new PhoneNumber(twilioToSecret), new PhoneNumber(twilioFromSecret),
                         new com.twilio.type.Twiml("<Response><Say>" + text + "</Say></Response>")).create();
-                TelemetryLogger.info(call.getSid());
-                //System.out.println(response.body());
+                TelemetryLogger.info("Twilio call returned : " + call.getSid());
                 coins.clear();
             }
         } catch (Exception e) {

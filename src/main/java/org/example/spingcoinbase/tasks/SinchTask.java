@@ -12,7 +12,7 @@ import java.util.*;
 
 @Component
 public class SinchTask {
-    private Set<Coin> coins = new HashSet<>();
+    private final Set<Coin> coins = new HashSet<>();
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
     public void call() {
         try {

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class TelemetryLogger {
     private static final Logger logger = LoggerFactory.getLogger(TelemetryLogger.class);
-    private static TelemetryClient telemetryClient = new TelemetryClient();
+    private static final TelemetryClient telemetryClient = new TelemetryClient();
     static {
         telemetryClient.getContext().setInstrumentationKey(System.getenv("APPINSIGHTS_INSTRUMENTATIONKEY"));
     }

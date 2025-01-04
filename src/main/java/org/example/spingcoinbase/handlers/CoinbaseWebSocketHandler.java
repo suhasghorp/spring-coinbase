@@ -54,7 +54,7 @@ public class CoinbaseWebSocketHandler extends TextWebSocketHandler  {
             var coin = coinManagerService.getCoins().get(ticker);
             coin.setPrice(price);
             coin.setSequence(sequence);
-            TelemetryLogger.info("Coin: " + ticker + ", Price: " + price + ", Sequence: " + sequence);
+            //TelemetryLogger.info("Coin: " + ticker + ", Price: " + price + ", Sequence: " + sequence);
             consumerService.processMessage(coin);
         }
     }
