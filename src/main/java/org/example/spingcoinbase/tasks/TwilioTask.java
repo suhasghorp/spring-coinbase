@@ -10,7 +10,6 @@ import jakarta.annotation.PostConstruct;
 import org.example.spingcoinbase.TelemetryLogger;
 import org.example.spingcoinbase.model.Coin;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.util.*;
@@ -48,17 +47,19 @@ public class TwilioTask {
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
     public void call() {
         try {
-            String text = "Price Alert!";
+            StringBuilder sb = new StringBuilder();
+            sb.append("Price Alert!");
             if (!coins.isEmpty()) {
+
                 for (Coin c : coins) {
-                    text += String.format("The price of %s has dropped to %.2f which is lower than %.2f.",
-                            c.getSymbol(), c.getPrice(), c.getThreshold());
+                    sb.append(String.format("The price of %s has dropped to %.2f which is lower than %.2f.",
+                            c.getSymbol(), c.getPrice(), c.getThreshold()));
                 }
                 assert twilioAccountSIDSecret != null;
                 assert twilioAuthTokenSecret != null;
                 Twilio.init(twilioAccountSIDSecret, twilioAuthTokenSecret);
                 Call call = Call.creator(new PhoneNumber(twilioToSecret), new PhoneNumber(twilioFromSecret),
-                        new com.twilio.type.Twiml("<Response><Say>" + text + "</Say></Response>")).create();
+                        new com.twilio.type.Twiml("<Response><Say>" + sb.toString() + "</Say></Response>")).create();
                 TelemetryLogger.info("Twilio call returned : " + call.getSid());
                 coins.clear();
             }
