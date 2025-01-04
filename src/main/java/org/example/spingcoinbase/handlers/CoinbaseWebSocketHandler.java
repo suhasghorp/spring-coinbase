@@ -60,12 +60,12 @@ public class CoinbaseWebSocketHandler extends TextWebSocketHandler  {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         TelemetryLogger.info("Connection closed: " + status);
     }
 
     @Override
-    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+    public void handleTransportError(WebSocketSession session, Throwable exception) {
         TelemetryLogger.error("Error occurred: " + exception.getMessage());
     }
 
