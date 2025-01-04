@@ -12,7 +12,7 @@ public class TelemetryLogger {
     static {
         telemetryClient.getContext().setInstrumentationKey(System.getenv("APPINSIGHTS_INSTRUMENTATIONKEY"));
     }
-    private static Map<String,SeverityLevel>  logLevelToSeverityLevelMap = new HashMap<>(){{
+    private static final Map<String,SeverityLevel>  logLevelToSeverityLevelMap = new HashMap<>(){{
         put("debug", SeverityLevel.Verbose);
         put("info", SeverityLevel.Information);
         put("warn", SeverityLevel.Warning);

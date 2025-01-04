@@ -59,13 +59,14 @@ public class TwilioTask {
                 assert twilioAuthTokenSecret != null;
                 Twilio.init(twilioAccountSIDSecret, twilioAuthTokenSecret);
                 Call call = Call.creator(new PhoneNumber(twilioToSecret), new PhoneNumber(twilioFromSecret),
-                        new com.twilio.type.Twiml("<Response><Say>" + sb.toString() + "</Say></Response>")).create();
+                        new com.twilio.type.Twiml("<Response><Say>" + sb + "</Say></Response>")).create();
                 TelemetryLogger.info("Twilio call returned : " + call.getSid());
                 coins.clear();
             }
         } catch (Exception e) {
             TelemetryLogger.error(e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

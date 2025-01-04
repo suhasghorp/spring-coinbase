@@ -40,6 +40,7 @@ public class ConsumerService {
             } catch (Exception e) {
                 TelemetryLogger.error(e.getMessage());
                 e.printStackTrace();
+                throw new RuntimeException(e);
             } finally {
                 lock.unlock();
             }
