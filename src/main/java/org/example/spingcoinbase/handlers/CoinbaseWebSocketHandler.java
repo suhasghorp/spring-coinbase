@@ -43,6 +43,7 @@ public class CoinbaseWebSocketHandler extends TextWebSocketHandler  {
     }
 
     public void sendPing() throws Exception {
+        //TelemetryLogger.info("PING sent...");
         session.sendMessage(new BinaryMessage("PING".getBytes()));
     }
 

@@ -1,5 +1,6 @@
 package org.example.spingcoinbase.tasks;
 
+import org.example.spingcoinbase.TelemetryLogger;
 import org.example.spingcoinbase.handlers.CoinbaseWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +22,7 @@ public class PingerTask {
         try {
             webSocketHandler.sendPing();
         } catch (Exception e) {
+            TelemetryLogger.info("Exception in sendPings() : " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException(e);
         }
