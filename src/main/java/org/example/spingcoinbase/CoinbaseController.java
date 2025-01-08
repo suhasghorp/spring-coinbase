@@ -1,6 +1,7 @@
 package org.example.spingcoinbase;
 
 import org.example.spingcoinbase.handlers.CacheHandler;
+import org.example.spingcoinbase.model.Coin;
 import org.example.spingcoinbase.services.CoinManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,5 +55,16 @@ public class CoinbaseController {
     public String getAllPrices() {
         String prices = cacheHandler.getAll();
         return prices;
+    }
+
+    @RequestMapping(
+            value = "/coin/limits",
+            method = GET)
+    @ResponseBody
+    public String getAllLimits() {
+        StringBuilder sb = new StringBuilder();
+        for (Coin coin : coinManagerService.getCoins().values())
+            sb.append(coin.getSymbol()).append(":").append(coin.getThreshold()).append("\n");
+        return sb.toString();
     }
 }

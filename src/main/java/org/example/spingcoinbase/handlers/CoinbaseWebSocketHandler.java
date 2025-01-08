@@ -6,6 +6,7 @@ import org.example.spingcoinbase.TelemetryLogger;
 import org.example.spingcoinbase.services.CoinManagerService;
 import org.example.spingcoinbase.services.ConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.TextMessage;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class CoinbaseWebSocketHandler extends TextWebSocketHandler  {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-
+    private WebSocketSession session = null;
     @Autowired
     private CoinManagerService coinManagerService;
     @Autowired
@@ -28,6 +29,7 @@ public class CoinbaseWebSocketHandler extends TextWebSocketHandler  {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         TelemetryLogger.info("Connected to Coinbase WebSocket");
+        this.session = session;
         var coins = coinManagerService.getCoins();
         // Add double quotes around each key
         String coinList = coins.keySet().stream().map(key -> "\"" + key + "\"") // Add double quotes around each key
@@ -38,6 +40,10 @@ public class CoinbaseWebSocketHandler extends TextWebSocketHandler  {
                 "  \"channels\": [{\"name\": \"ticker\", \"product_ids\": [" + coinList + "]}]\n" +
                 "}";
         session.sendMessage(new TextMessage(subscribeMessage));
+    }
+
+    public void sendPing() throws Exception {
+        session.sendMessage(new BinaryMessage("PING".getBytes()));
     }
 
     @Override

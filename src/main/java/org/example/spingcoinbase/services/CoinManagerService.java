@@ -26,10 +26,6 @@ public class CoinManagerService implements EnvironmentAware {
         coins.get(symbol).setThreshold(price);
     }
 
-    public void setThreshold(String symbol, double threshold) {
-        coins.get(symbol).setThreshold(threshold);
-    }
-
     private Map<String, Coin> coins = new ConcurrentHashMap<>();
 
     public Map<String, Coin> getCoins(){
@@ -38,6 +34,8 @@ public class CoinManagerService implements EnvironmentAware {
         }
         return coins;
     }
+
+
 
     public void loadCoins(){
 
@@ -74,27 +72,5 @@ public class CoinManagerService implements EnvironmentAware {
     @Override
     public void setEnvironment(Environment environment) {
         CoinManagerService.environment = environment;
-    }
-
-    public void shutdown() {
-        if (environment != null) {
-            org.springframework.core.env.PropertySource<?> coinsSource = ((ConfigurableEnvironment) environment).getPropertySources().get("coins");
-            assert coinsSource != null;
-            Properties coinsProps = (Properties) coinsSource.getSource();
-
-            for (Map.Entry<String, Coin> e : coins.entrySet()) {
-                double threshold = e.getValue().getThreshold();
-                coinsProps.setProperty(e.getKey(), String.valueOf(threshold));
-            }
-            try {
-                URL res = getClass().getClassLoader().getResource("coins.properties");
-                assert res != null;
-                FileOutputStream outputStream = new FileOutputStream(res.getPath());
-                coinsProps.store(outputStream, "Updated coins");
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
