@@ -6,6 +6,7 @@ import org.example.spingcoinbase.handlers.CoinbaseWebSocketHandler;
 import org.example.spingcoinbase.services.CoinManagerService;
 import org.example.spingcoinbase.services.ConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -19,26 +20,11 @@ import java.util.Objects;
 @SpringBootApplication
 @EnableScheduling
 @EnableCaching
-public class SpingCoinbaseApplication {
+public class SpingCoinbaseApplication implements CommandLineRunner {
 
     public static ConfigurableApplicationContext ctx;
-    private static final String COINBASE_WS_URL = "wss://ws-feed.exchange.coinbase.com";
-
-    @Autowired
-    WebSocketClient webSocketClient ;
     @Autowired
     CoinbaseWebSocketHandler webSocketHandler;
-    @Autowired
-    private ConsumerService consumerService;
-    @Autowired
-    private CoinManagerService coinManagerService;
-
-    @PostConstruct
-    public void start() throws Exception {
-        WebSocketSession session = webSocketClient.execute(webSocketHandler, COINBASE_WS_URL).get();
-        TelemetryLogger.info("WebSocket connection established: " + Objects.requireNonNull(session.getRemoteAddress()));
-    }
-
     @PreDestroy
     public void requestShutdown2PreDestroy() {
         TelemetryLogger.info("Requested Shutdown (via Context) of the Spring Boot Container");
@@ -50,4 +36,8 @@ public class SpingCoinbaseApplication {
         ctx = SpringApplication.run(SpingCoinbaseApplication.class, args);
     }
 
+    @Override
+    public void run(String... args) throws Exception {
+        webSocketHandler.connect();
+    }
 }
