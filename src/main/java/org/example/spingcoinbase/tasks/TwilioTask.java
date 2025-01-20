@@ -7,7 +7,7 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.type.PhoneNumber;
 import jakarta.annotation.PostConstruct;
-import org.example.spingcoinbase.TelemetryLogger;
+import lombok.extern.slf4j.Slf4j;
 import org.example.spingcoinbase.model.Coin;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,6 +19,7 @@ Must define 3 environment variables starrting with AZURE_
  */
 
 @Component
+@Slf4j
 public class TwilioTask {
 
     //private final Environment env;
@@ -52,20 +53,24 @@ public class TwilioTask {
             if (!coins.isEmpty()) {
 
                 for (Coin c : coins) {
-                    sb.append(String.format("The price of %s has dropped to %.2f which is lower than %.2f.",
-                            c.getSymbol(), c.getPrice(), c.getThreshold()));
+                    if (c.getPrice() > c.getHighThreshold()) {
+                        sb.append(String.format("The price of %s has risen to %.2f which is higher than %.2f.",
+                                c.getSymbol(), c.getPrice(), c.getHighThreshold()));
+                    } else if (c.getPrice() < c.getLowThreshold()) {
+                        sb.append(String.format("The price of %s has dropped to %.2f which is lower than %.2f.",
+                                c.getSymbol(), c.getPrice(), c.getLowThreshold()));
+                    }
                 }
                 assert twilioAccountSIDSecret != null;
                 assert twilioAuthTokenSecret != null;
                 Twilio.init(twilioAccountSIDSecret, twilioAuthTokenSecret);
                 Call call = Call.creator(new PhoneNumber(twilioToSecret), new PhoneNumber(twilioFromSecret),
                         new com.twilio.type.Twiml("<Response><Say>" + sb + "</Say></Response>")).create();
-                TelemetryLogger.info("Twilio call returned : " + call.getSid());
+                log.info("Twilio call returned : {}", call.getSid());
                 coins.clear();
             }
         } catch (Exception e) {
-            TelemetryLogger.error(e.getMessage());
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
             throw new RuntimeException(e);
         }
     }

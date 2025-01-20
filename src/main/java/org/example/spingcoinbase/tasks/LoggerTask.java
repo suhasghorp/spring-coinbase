@@ -1,16 +1,18 @@
 package org.example.spingcoinbase.tasks;
 
-import org.example.spingcoinbase.TelemetryLogger;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.spingcoinbase.handlers.CacheHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
+@Slf4j
 public class LoggerTask {
-    @Autowired
+
     private CacheHandler cacheHandler;
 
     @Scheduled(fixedDelay = 30000, initialDelay = 5000)
-    public void log() {TelemetryLogger.info(cacheHandler.getAll());}
+    public void log() {log.info(cacheHandler.getAll());}
 }
