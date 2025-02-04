@@ -1,7 +1,7 @@
-package org.example.spingcoinbase.services;
+package org.example.springcoinbase.services;
 
 import lombok.Getter;
-import org.example.spingcoinbase.model.Coin;
+import org.example.springcoinbase.model.Coin;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;

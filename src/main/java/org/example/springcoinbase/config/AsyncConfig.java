@@ -1,4 +1,4 @@
-package org.example.spingcoinbase.config;
+package org.example.springcoinbase.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

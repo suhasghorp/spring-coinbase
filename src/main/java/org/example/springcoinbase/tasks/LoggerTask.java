@@ -1,8 +1,8 @@
-package org.example.spingcoinbase.tasks;
+package org.example.springcoinbase.tasks;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.spingcoinbase.handlers.CacheHandler;
+import org.example.springcoinbase.handlers.CacheHandler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

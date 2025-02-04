@@ -1,4 +1,4 @@
-package org.example.spingcoinbase.handlers;
+package org.example.springcoinbase.handlers;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

@@ -1,4 +1,4 @@
-package org.example.spingcoinbase.model;
+package org.example.springcoinbase.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

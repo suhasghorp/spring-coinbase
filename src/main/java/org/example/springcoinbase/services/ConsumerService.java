@@ -1,10 +1,10 @@
-package org.example.spingcoinbase.services;
+package org.example.springcoinbase.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.spingcoinbase.handlers.CacheHandler;
-import org.example.spingcoinbase.model.Coin;
-import org.example.spingcoinbase.tasks.TwilioTask;
+import org.example.springcoinbase.handlers.CacheHandler;
+import org.example.springcoinbase.model.Coin;
+import org.example.springcoinbase.tasks.TwilioTask;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.locks.Lock;

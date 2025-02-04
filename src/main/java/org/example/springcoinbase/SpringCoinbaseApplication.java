@@ -1,22 +1,15 @@
-package org.example.spingcoinbase;
+package org.example.springcoinbase;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.spingcoinbase.handlers.CoinbaseWebSocketHandler;
-import org.example.spingcoinbase.services.CoinManagerService;
-import org.example.spingcoinbase.services.ConsumerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.springcoinbase.handlers.CoinbaseWebSocketHandler;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.client.WebSocketClient;
-import java.util.Objects;
 
 /*
     * This is the main class for the Spring Boot Application
@@ -29,7 +22,7 @@ import java.util.Objects;
 @EnableCaching
 @Slf4j
 @AllArgsConstructor
-public class SpingCoinbaseApplication implements CommandLineRunner {
+public class SpringCoinbaseApplication implements CommandLineRunner {
 
     public static ConfigurableApplicationContext ctx;
 
@@ -43,7 +36,7 @@ public class SpingCoinbaseApplication implements CommandLineRunner {
 
 
     public static void main(String[] args) {
-        ctx = SpringApplication.run(SpingCoinbaseApplication.class, args);
+        ctx = SpringApplication.run(SpringCoinbaseApplication.class, args);
     }
 
     @Override

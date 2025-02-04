@@ -1,14 +1,11 @@
-package org.example.spingcoinbase.tasks;
+package org.example.springcoinbase.tasks;
 
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.type.PhoneNumber;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.example.spingcoinbase.model.Coin;
+import org.example.springcoinbase.model.Coin;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,16 +21,20 @@ public class TwilioTask {
 
     //private final Environment env;
     private final Set<Coin> coins = new HashSet<>();
+    @Value("${TWILIO_ACCOUNT_SID}")
     private String twilioAccountSIDSecret;
+    @Value("${TWILIO_AUTH_TOKEN}")
     private String twilioAuthTokenSecret;
+    @Value("${TWILIO_FROM_NUMBER}")
     private String twilioFromSecret;
+    @Value("${TWILIO_TO_NUMBER}")
     private String twilioToSecret;
-    @Value("${AZURE_KEYVAULT_URL}")
-    private String keyVaultUrl;
+    //@Value("${AZURE_KEYVAULT_URL}")
+    //private String keyVaultUrl;
 
     @PostConstruct
     public void init() {
-        SecretClient secretClient = new SecretClientBuilder().vaultUrl(keyVaultUrl)
+        /*SecretClient secretClient = new SecretClientBuilder().vaultUrl(keyVaultUrl)
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
         String twilioAccountSID = "TWILIO-ACCOUNT-SID";
@@ -43,7 +44,7 @@ public class TwilioTask {
         String twilioFrom = "TWILIO-FROM-NUMBER";
         twilioFromSecret = secretClient.getSecret(twilioFrom).getValue();
         String twilioTo = "TWILIO-TO-NUMBER";
-        twilioToSecret = secretClient.getSecret(twilioTo).getValue();
+        twilioToSecret = secretClient.getSecret(twilioTo).getValue();*/
     }
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
     public void call() {

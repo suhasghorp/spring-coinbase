@@ -1,10 +1,10 @@
-package org.example.spingcoinbase.handlers;
+package org.example.springcoinbase.handlers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.example.spingcoinbase.services.CoinManagerService;
-import org.example.spingcoinbase.services.ConsumerService;
+import org.example.springcoinbase.services.CoinManagerService;
+import org.example.springcoinbase.services.ConsumerService;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;

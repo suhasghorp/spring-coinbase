@@ -1,13 +1,10 @@
-package org.example.spingcoinbase;
+package org.example.springcoinbase;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.spingcoinbase.handlers.CacheHandler;
-import org.example.spingcoinbase.model.Coin;
-import org.example.spingcoinbase.services.CoinManagerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.springcoinbase.handlers.CacheHandler;
+import org.example.springcoinbase.model.Coin;
+import org.example.springcoinbase.services.CoinManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +34,7 @@ public class CoinbaseController {
                 log.info("Thread was Interrupted! Error in Thread Sleep (2 Seconds!)");
             }
             log.info("Callable Thread Id: {}", Thread.currentThread().getName());
-            SpingCoinbaseApplication.ctx.close();
+            SpringCoinbaseApplication.ctx.close();
         };
 
         new Thread(runnable).start();
