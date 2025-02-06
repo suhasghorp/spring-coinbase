@@ -4,16 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.springcoinbase.handlers.CacheHandler;
 import org.example.springcoinbase.model.Coin;
+import org.example.springcoinbase.model.CoinsWrapper;
 import org.example.springcoinbase.services.CoinManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Slf4j
 @Controller
@@ -54,13 +60,28 @@ public class CoinbaseController {
 
     }
 
-    @RequestMapping(
-            value = "/coin/prices",
-            method = GET)
+    @RequestMapping(value = "/coin/prices",method = GET)
     @ResponseBody
     public ResponseEntity<String> getAllPrices() {
         String prices = cacheHandler.getAll();
         return new ResponseEntity<>(prices, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/coin/updates", method = GET)
+    public String showForm(Model model) {
+        CoinsWrapper coinsWrapper = new CoinsWrapper();
+        coinsWrapper.setCoins(new ArrayList<>(coinManagerService.getCoins().values()));
+        model.addAttribute("wrapper", coinsWrapper);
+        return "update_form";
+    }
+
+    @RequestMapping(value = "/coin/updates", method = POST)
+    public ResponseEntity<String> updateLimits(@ModelAttribute CoinsWrapper wrapper, Model model) {
+        for (Coin coin : wrapper.getCoins()) {
+            coinManagerService.updateCoinLowThreshold(coin.getSymbol(), coin.getLowThreshold());
+            coinManagerService.updateCoinHighThreshold(coin.getSymbol(), coin.getHighThreshold());
+        }
+        return new ResponseEntity<>("Updated all coins", HttpStatus.OK);
     }
 
     @RequestMapping(

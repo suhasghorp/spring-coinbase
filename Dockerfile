@@ -1,22 +1,19 @@
-# Use the Eclipse temurin alpine official image
-# https://hub.docker.com/_/eclipse-temurin
-FROM ghcr.io/graalvm/jdk-community:23
+FROM bellsoft/liberica-runtime-container:jdk-21-stream-musl AS builder
+WORKDIR /home/app
+COPY . ./spring-coinbase
+RUN cd spring-coinbase && ./mvnw -Dmaven.test.skip=true clean package
 
-# Create and change to the app directory.
-WORKDIR /app
+FROM bellsoft/liberica-runtime-container:jdk-21-cds-slim-musl AS optimizer
 
-# Copy local code to the container image.
-COPY . ./
+WORKDIR /home/app
+COPY --from=builder /home/app/spring-coinbase/target/*.jar spring-coinbase.jar
+RUN java -Djarmode=tools -jar spring-coinbase.jar extract --layers --launcher --destination extracted
 
-# Build the app.
-RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
+FROM bellsoft/liberica-runtime-container:jre-21-stream-musl
 
-# Run the app by dynamically finding the JAR file in the target directory
-CMD ["sh", "-c", "java -jar target/*.jar"]
-
-# docker build -t suhasghorp/springcoinbase:1.0 .
-
-# docker run -it -p 8080:8080 --env-file=.secrets suhasghorp/springcoinbase:1.0
-# docker run -d -p 80:80 --env-file=.secrets suhasghorp/springcoinbase:1.0
-# docker login
-# docker push suhasghorp/springcoinbase:1.0
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+EXPOSE 8080
+COPY --from=optimizer /home/app/extracted/dependencies/ ./
+COPY --from=optimizer /home/app/extracted/spring-boot-loader/ ./
+COPY --from=optimizer /home/app/extracted/snapshot-dependencies/ ./
+COPY --from=optimizer /home/app/extracted/application/ ./

@@ -27,7 +27,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>23</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -105,6 +105,10 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -119,6 +123,7 @@
                             <artifactId>lombok</artifactId>
                         </path>
                     </annotationProcessorPaths>
+
                 </configuration>
             </plugin>
             <plugin>
@@ -131,6 +136,13 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <image>
+                        <name>suhasghorp/spring-coinbase:1.0</name>
+                        <env>
+                            <JAVA_TOOL_OPTIONS>-Xss256K -Xmx64M -XX:ReservedCodeCacheSize=64M -XX:MaxMetaspaceSize=64M</JAVA_TOOL_OPTIONS>
+                        </env>
+                        <builder>bellsoft/buildpacks.builder:musl</builder>
+                    </image>
                 </configuration>
             </plugin>
         </plugins>
