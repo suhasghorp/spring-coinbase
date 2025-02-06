@@ -29,6 +29,7 @@ public class CoinbaseController {
     private CoinManagerService coinManagerService;
     private CacheHandler cacheHandler;
 
+
     @RequestMapping(value = "/shutdown2", method = GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> rule() {
         log.info("Entry Thread Id (Debug): {}", Thread.currentThread().getName());
@@ -81,6 +82,7 @@ public class CoinbaseController {
             coinManagerService.updateCoinLowThreshold(coin.getSymbol(), coin.getLowThreshold());
             coinManagerService.updateCoinHighThreshold(coin.getSymbol(), coin.getHighThreshold());
         }
+        coinManagerService.saveCoins();
         return new ResponseEntity<>("Updated all coins", HttpStatus.OK);
     }
 
