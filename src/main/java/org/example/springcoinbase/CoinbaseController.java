@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -49,18 +48,6 @@ public class CoinbaseController {
         return new ResponseEntity<>("Shutdown Requested - Will Shutdown in Next 2 Seconds!", HttpStatus.OK);
     }
 
-    @RequestMapping(
-            value = "/coin/update",
-            params = { "coin", "low", "high" },
-            method = GET)
-    @ResponseBody
-    public ResponseEntity<String> updateCoinPriceLevel(@RequestParam("coin") String coin, @RequestParam("low") double low, @RequestParam("high") double high) {
-        coinManagerService.updateCoinLowThreshold(coin, low);
-        coinManagerService.updateCoinHighThreshold(coin, high);
-        return new ResponseEntity<>("Updated Price for " + coin + " to " + low + " and " + high, HttpStatus.OK);
-
-    }
-
     @RequestMapping(value = "/coin/prices",method = GET)
     @ResponseBody
     public ResponseEntity<String> getAllPrices() {
@@ -86,14 +73,4 @@ public class CoinbaseController {
         return new ResponseEntity<>("Updated all coins", HttpStatus.OK);
     }
 
-    @RequestMapping(
-            value = "/coin/limits",
-            method = GET)
-    @ResponseBody
-    public ResponseEntity<String> getAllLimits() {
-        StringBuilder sb = new StringBuilder();
-        for (Coin coin : coinManagerService.getCoins().values())
-            sb.append(coin.getSymbol()).append(":").append(coin.getLowThreshold()).append(",").append(coin.getHighThreshold()).append("\n");
-        return new ResponseEntity<>(sb.toString(), HttpStatus.OK);
-    }
 }

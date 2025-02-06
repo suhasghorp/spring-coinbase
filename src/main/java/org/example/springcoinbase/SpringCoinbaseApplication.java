@@ -13,9 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 /*
     * This is the main class for the Spring Boot Application
-    * http://localhost:8080/coin/update?coin=DOGE-USD&low=0.32&high=0.43
+    * http://localhost:8080/coin/updates
     * http://localhost:8080/coin/prices
-    * http://localhost:8080/coin/limits
  */
 @SpringBootApplication
 @EnableScheduling

@@ -11,15 +11,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.util.*;
 
-/* WATCH YOUTUBE https://youtu.be/ZUcsd2xiRto?si=KUosFCVDgRAgcH68
-Must define 3 environment variables starrting with AZURE_
- */
-
 @Component
 @Slf4j
 public class TwilioTask {
 
-    //private final Environment env;
     private final Set<Coin> coins = new HashSet<>();
     @Value("${TWILIO_ACCOUNT_SID}")
     private String twilioAccountSIDSecret;
@@ -29,23 +24,8 @@ public class TwilioTask {
     private String twilioFromSecret;
     @Value("${TWILIO_TO_NUMBER}")
     private String twilioToSecret;
-    //@Value("${AZURE_KEYVAULT_URL}")
-    //private String keyVaultUrl;
 
-    @PostConstruct
-    public void init() {
-        /*SecretClient secretClient = new SecretClientBuilder().vaultUrl(keyVaultUrl)
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
-        String twilioAccountSID = "TWILIO-ACCOUNT-SID";
-        twilioAccountSIDSecret = secretClient.getSecret(twilioAccountSID).getValue();
-        String twilioAuthToken = "TWILIO-AUTH-TOKEN";
-        twilioAuthTokenSecret = secretClient.getSecret(twilioAuthToken).getValue();
-        String twilioFrom = "TWILIO-FROM-NUMBER";
-        twilioFromSecret = secretClient.getSecret(twilioFrom).getValue();
-        String twilioTo = "TWILIO-TO-NUMBER";
-        twilioToSecret = secretClient.getSecret(twilioTo).getValue();*/
-    }
+
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
     public void call() {
         try {

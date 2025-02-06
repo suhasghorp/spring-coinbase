@@ -12,5 +12,4 @@ public class Coin {
     private Double price;
     private double lowThreshold;
     private double highThreshold;
-    //private long sequence;
 }
