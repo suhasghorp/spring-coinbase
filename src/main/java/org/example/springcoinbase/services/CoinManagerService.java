@@ -2,11 +2,8 @@ package org.example.springcoinbase.services;
 
 import lombok.Getter;
 import org.example.springcoinbase.model.Coin;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
-import org.springframework.core.env.Environment;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,16 +11,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 @Component
 
-public class CoinManagerService implements EnvironmentAware {
+public class CoinManagerService  {
 
-    private static Environment environment;
+    private final S3Service s3Service;
+    private final ResourceLoader resourceLoader;
 
-    @Autowired
-    private S3Service s3Service;
-
-    @Autowired
-    private ResourceLoader resourceLoader;
-
+    CoinManagerService(S3Service s3Service, ResourceLoader resourceLoader){
+        this.s3Service = s3Service;
+        this.resourceLoader = resourceLoader;
+    }
 
     public void updateCoinLowThreshold(String symbol, double price) {
         coins.get(symbol).setLowThreshold(price);
@@ -69,8 +65,4 @@ public class CoinManagerService implements EnvironmentAware {
     }
 
 
-    @Override
-    public void setEnvironment(Environment environment) {
-        CoinManagerService.environment = environment;
-    }
 }

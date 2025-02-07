@@ -1,5 +1,6 @@
 package org.example.springcoinbase.services;
 
+import org.springframework.scheduling.annotation.Async;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +14,13 @@ import java.util.List;
 @Service
 public class S3Service {
 
+    private final S3Client s3Client;
 
-    @Autowired
-    S3Client s3Client;
+    public S3Service(S3Client s3Client) {
+        this.s3Client = s3Client;
+    }
 
+    @Async
     public void uploadFile(String bucketName, String key, String content) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
