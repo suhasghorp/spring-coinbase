@@ -55,6 +55,13 @@ public class CoinbaseController {
         return new ResponseEntity<>(prices, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/coin/logs",method = GET)
+    public String getLogs(Model model) {
+        var map = cacheHandler.getLogs();
+        model.addAttribute("logsMap", map);
+        return "logs";
+    }
+
     @RequestMapping(value = "/coin/updates", method = GET)
     public String showForm(Model model) {
         CoinsWrapper coinsWrapper = new CoinsWrapper();

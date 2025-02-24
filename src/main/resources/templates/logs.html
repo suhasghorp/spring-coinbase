@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+    <h2>Logs</h2>
+
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Time</th>
+                <th>Log</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${logsMap}">
+                <td th:text="${entry.key}">100</td>
+                <td th:text="${entry.value}">100</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+</div>
+</body>
+</html>

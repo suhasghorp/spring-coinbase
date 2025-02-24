@@ -5,10 +5,15 @@ import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.type.PhoneNumber;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.example.springcoinbase.handlers.CacheHandler;
 import org.example.springcoinbase.model.Coin;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 @Component
@@ -25,6 +30,11 @@ public class TwilioTask {
     @Value("${TWILIO_TO_NUMBER}")
     private String twilioToSecret;
 
+    private final CacheHandler cacheHandler;
+
+    public TwilioTask(CacheHandler cacheHandler) {
+        this.cacheHandler = cacheHandler;
+    }
 
     @Scheduled(fixedDelay = 5000, initialDelay = 5000)
     public void call() {
@@ -48,6 +58,11 @@ public class TwilioTask {
                 Call call = Call.creator(new PhoneNumber(twilioToSecret), new PhoneNumber(twilioFromSecret),
                         new com.twilio.type.Twiml("<Response><Say>" + sb + "</Say></Response>")).create();
                 log.info("Twilio call returned : {}", call.getSid());
+                LocalDate day = LocalDate.now();
+                LocalTime time = LocalTime.now(Clock.system(ZoneId.of("America/New_York")));
+                ZonedDateTime zonedDateTime = ZonedDateTime.of(day, time, ZoneId.of("America/New_York"));
+                String now = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(zonedDateTime);
+                cacheHandler.putLog(now, sb.toString());
                 coins.clear();
             }
         } catch (Exception e) {
