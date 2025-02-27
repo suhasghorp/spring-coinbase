@@ -34,11 +34,13 @@ public class ConsumerService {
             try {
                 lock.lock();
                 long now = Instant.now().getEpochSecond();
-                if ((now - coinManagerService.getCallTime(coin.getSymbol())) > 900) {
+                if ((now - coinManagerService.getCallTime(coin.getSymbol())) > 300) {
                     log.info("Calling twilio for coin: {}", coin.getSymbol());
                     twilioTask.addCoin(coin);
                     coinManagerService.setCallTime(coin.getSymbol(), now);
 
+                } else {
+                    log.info("Not calling twilio for {} as 5 minutes haven't passed", coin.getSymbol());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(),e);
